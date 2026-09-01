@@ -1,7 +1,8 @@
-import { Stethoscope, LogOut, ClipboardList, ShieldCheck } from "lucide-react";
+import { LogOut, ClipboardList, ShieldCheck } from "lucide-react";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { ToastProvider } from "./components/ToastProvider";
 import { ConfirmProvider } from "./components/ConfirmProvider";
+import { Logo } from "./components/Logo";
 import { Login } from "./pages/Login";
 import { DoctorDashboard } from "./pages/DoctorDashboard";
 import { AssistantDashboard } from "./pages/AssistantDashboard";
@@ -20,11 +21,11 @@ function Shell() {
     <div className="app-shell">
       <header className="app-header">
         <div className="brand">
-          <div className="brand-mark">
-            <Stethoscope size={20} strokeWidth={2.25} />
-          </div>
+          <span className="brand-mark">
+            <Logo size={38} />
+          </span>
           <div>
-            <div className="app-title">Doctor-app</div>
+            <div className="app-title">ClinIQ</div>
             <div className="muted">
               {user.role === "admin" ? "Platform administration" : "Appointment & billing management"}
             </div>

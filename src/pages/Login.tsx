@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
-import { Stethoscope, ClipboardCheck, Receipt, CalendarCheck2, Lock, User } from "lucide-react";
+import { ClipboardCheck, Receipt, CalendarCheck2, Lock, User } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import { Logo } from "../components/Logo";
 
 export function Login() {
   const { login, loginAdmin, loading, error } = useAuth();
@@ -31,9 +32,9 @@ export function Login() {
       <div className="auth-layout">
         <div className="auth-hero">
           <div className="brand-mark brand-mark-lg">
-            <Stethoscope size={26} strokeWidth={2.25} />
+            <Logo size={26} variant="mark" />
           </div>
-          <h1>Doctor-app</h1>
+          <h1>ClinIQ</h1>
           <p>Run appointments and billing for the whole practice from one clean workspace.</p>
 
           <ul className="hero-feature-list">
