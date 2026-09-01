@@ -64,6 +64,7 @@ export function AssistantDashboard() {
 
   return (
     <div className="dashboard">
+      <div className="section-eyebrow">Overview</div>
       <div className="stat-row">
         <StatCard icon={Users} label="Patients on file" value={stats.patients} tone="violet" />
         <StatCard icon={CalendarDays} label="Today's schedule" value={stats.todayCount} tone="blue" />

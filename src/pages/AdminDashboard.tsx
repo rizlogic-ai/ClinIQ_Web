@@ -138,6 +138,7 @@ export function AdminDashboard() {
 
   return (
     <div className="dashboard">
+      <div className="section-eyebrow">Overview</div>
       <div className="stat-row">
         <StatCard icon={Building2} label="Clinics" value={totals.clinicCount} tone="violet" />
         <StatCard icon={Stethoscope} label="Doctors across clinics" value={totals.doctorCount} tone="blue" />
@@ -179,9 +180,15 @@ export function AdminDashboard() {
                   <span className="muted">
                     {c.doctorCount} doctor{c.doctorCount === 1 ? "" : "s"}
                   </span>
-                  {!c.isActive && <span className="badge badge-sub-cancelled">Inactive</span>}
+                  {!c.isActive && (
+                    <span className="badge badge-sub-cancelled">
+                      <span className="badge-dot" />
+                      Inactive
+                    </span>
+                  )}
                   {c.subscription && (
                     <span className={`badge badge-sub-${c.subscription.status}`}>
+                      <span className="badge-dot" />
                       {c.subscription.status}
                     </span>
                   )}
@@ -208,6 +215,7 @@ export function AdminDashboard() {
                       {selectedClinic.name}
                       {!selectedClinic.isActive && (
                         <span className="badge badge-sub-cancelled" style={{ marginLeft: "0.5rem" }}>
+                          <span className="badge-dot" />
                           Inactive
                         </span>
                       )}
@@ -268,6 +276,7 @@ export function AdminDashboard() {
                       </div>
                     </div>
                     <span className={`badge badge-sub-${selectedClinic.subscription.status}`}>
+                      <span className="badge-dot" />
                       {selectedClinic.subscription.status}
                     </span>
                   </div>
@@ -311,6 +320,7 @@ export function AdminDashboard() {
                             <td>{d.username}</td>
                             <td>
                               <span className={`badge badge-sub-${d.isActive ? "active" : "cancelled"}`}>
+                                <span className="badge-dot" />
                                 {d.isActive ? "Active" : "Inactive"}
                               </span>
                             </td>
@@ -378,6 +388,7 @@ export function AdminDashboard() {
                             <td>{a.doctors.map((d) => d.name).join(", ") || "—"}</td>
                             <td>
                               <span className={`badge badge-sub-${a.isActive ? "active" : "cancelled"}`}>
+                                <span className="badge-dot" />
                                 {a.isActive ? "Active" : "Inactive"}
                               </span>
                             </td>

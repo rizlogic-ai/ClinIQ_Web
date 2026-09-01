@@ -190,6 +190,7 @@ export function DoctorDashboard() {
 
   return (
     <div className="dashboard">
+      <div className="section-eyebrow">Overview</div>
       <div className="stat-row">
         <StatCard icon={Clock3} label="Pending review" value={stats.pending} tone="amber" />
         <StatCard icon={CheckCircle2} label="Accepted, upcoming" value={stats.accepted} tone="blue" />

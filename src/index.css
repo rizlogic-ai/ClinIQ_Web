@@ -222,6 +222,35 @@ button {
   z-index: 10;
 }
 
+.app-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--primary-light), transparent 40%);
+}
+
+.section-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.section-eyebrow::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+}
+
 .brand {
   display: flex;
   align-items: center;
@@ -445,6 +474,8 @@ textarea {
 }
 
 .stat-card {
+  position: relative;
+  overflow: hidden;
   background: var(--surface);
   border: 1px solid var(--border-soft);
   border-radius: var(--radius);
@@ -454,6 +485,16 @@ textarea {
   gap: 0.85rem;
   box-shadow: var(--shadow-sm);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--tone, var(--primary-light));
 }
 
 .stat-card:hover {
@@ -471,9 +512,17 @@ textarea {
   flex-shrink: 0;
 }
 
+.stat-tone-amber {
+  --tone: var(--amber-text);
+}
+
 .stat-tone-amber .stat-icon {
   background: var(--amber-bg);
   color: var(--amber-text);
+}
+
+.stat-tone-blue {
+  --tone: #1e40af;
 }
 
 .stat-tone-blue .stat-icon {
@@ -481,9 +530,17 @@ textarea {
   color: #1e40af;
 }
 
+.stat-tone-green {
+  --tone: var(--success-text);
+}
+
 .stat-tone-green .stat-icon {
   background: var(--success-bg);
   color: var(--success-text);
+}
+
+.stat-tone-violet {
+  --tone: #6d28d9;
 }
 
 .stat-tone-violet .stat-icon {
@@ -491,9 +548,17 @@ textarea {
   color: #6d28d9;
 }
 
+.stat-tone-red {
+  --tone: var(--danger);
+}
+
 .stat-tone-red .stat-icon {
   background: var(--danger-tint);
   color: var(--danger);
+}
+
+.stat-tone-neutral {
+  --tone: var(--muted);
 }
 
 .stat-tone-neutral .stat-icon {
@@ -589,6 +654,7 @@ textarea {
   font-weight: 700;
   font-size: 0.85rem;
   flex-shrink: 0;
+  box-shadow: 0 0 0 3px var(--primary-tint);
 }
 
 .patient-name {
@@ -890,7 +956,7 @@ textarea {
 .table th,
 .table td {
   text-align: left;
-  padding: 0.7rem 0.95rem;
+  padding: 0.85rem 1rem;
   border-bottom: 1px solid var(--border-soft);
   font-size: 0.88rem;
 }
@@ -1136,6 +1202,7 @@ textarea {
 }
 
 .clinic-list-item {
+  position: relative;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -1159,6 +1226,17 @@ textarea {
   background: var(--primary-tint);
 }
 
+.clinic-list-item-active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--primary);
+}
+
 .clinic-list-name {
   font-weight: 700;
   font-size: 0.92rem;
@@ -1175,6 +1253,14 @@ textarea {
   flex-wrap: wrap;
   align-items: center;
   gap: 1.75rem;
+}
+
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
 }
 
 .badge-sub-active {
