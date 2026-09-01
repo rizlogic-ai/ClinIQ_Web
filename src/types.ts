@@ -119,10 +119,14 @@ export interface Invoice {
   appointmentId: string;
   patientId: string;
   patient: Patient | null;
+  doctor: Doctor | null;
+  appointmentDate: string | null;
+  appointmentReason: string | null;
   services: ServiceLine[];
   total: number;
   status: InvoiceStatus;
   issuedBy: string;
+  issuedByName: string | null;
   issuedAt: string;
   paidAt?: string;
 }

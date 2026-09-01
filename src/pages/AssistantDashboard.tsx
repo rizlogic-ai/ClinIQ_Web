@@ -13,12 +13,16 @@ import {
   CircleCheck,
   Inbox,
   FileText,
+  Eye,
+  Printer,
 } from "lucide-react";
 import { appointmentsApi, doctorsApi, invoicesApi, patientsApi } from "../lib/resources";
 import type { Appointment, Doctor, Invoice, Patient } from "../types";
 import { AppointmentCard } from "../components/AppointmentCard";
 import { StatusBadge } from "../components/StatusBadge";
 import { StatCard } from "../components/StatCard";
+import { Modal } from "../components/Modal";
+import { InvoiceDocument } from "../components/InvoiceDocument";
 import { useToast } from "../components/ToastProvider";
 import { useConfirm } from "../components/ConfirmProvider";
 import { PatientHistoryModal } from "../components/PatientHistoryModal";
@@ -400,6 +404,7 @@ function InvoicesPanel({ onChanged }: { onChanged: () => void }) {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [viewInvoice, setViewInvoice] = useState<Invoice | null>(null);
 
   async function refresh() {
     setLoading(true);
@@ -520,16 +525,22 @@ function InvoicesPanel({ onChanged }: { onChanged: () => void }) {
                       <StatusBadge status={inv.status} />
                     </td>
                     <td>
-                      {inv.status === "unpaid" && (
-                        <button
-                          className="btn btn-ghost btn-sm"
-                          disabled={busyId === inv.id}
-                          onClick={() => handlePay(inv)}
-                        >
-                          <CircleCheck size={14} />
-                          Mark paid
+                      <div style={{ display: "flex", gap: "0.4rem" }}>
+                        <button className="btn btn-ghost btn-sm" onClick={() => setViewInvoice(inv)}>
+                          <Eye size={14} />
+                          View
                         </button>
-                      )}
+                        {inv.status === "unpaid" && (
+                          <button
+                            className="btn btn-ghost btn-sm"
+                            disabled={busyId === inv.id}
+                            onClick={() => handlePay(inv)}
+                          >
+                            <CircleCheck size={14} />
+                            Mark paid
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -538,6 +549,29 @@ function InvoicesPanel({ onChanged }: { onChanged: () => void }) {
           </div>
         )}
       </section>
+
+      {viewInvoice && (
+        <InvoiceViewModal invoice={viewInvoice} onClose={() => setViewInvoice(null)} />
+      )}
     </div>
+  );
+}
+
+function InvoiceViewModal({ invoice, onClose }: { invoice: Invoice; onClose: () => void }) {
+  return (
+    <Modal title="Invoice" onClose={onClose}>
+      <div className="invoice-print-area">
+        <InvoiceDocument invoice={invoice} />
+      </div>
+      <div className="modal-actions invoice-doc-noprint">
+        <button className="btn btn-ghost" onClick={onClose}>
+          Close
+        </button>
+        <button className="btn btn-primary" onClick={() => window.print()}>
+          <Printer size={15} />
+          Print
+        </button>
+      </div>
+    </Modal>
   );
 }

@@ -1256,3 +1256,94 @@ textarea {
     display: none;
   }
 }
+
+/* Invoice document */
+.invoice-doc {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.invoice-doc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.invoice-doc-header h2 {
+  margin: 0 0 0.15rem;
+  font-size: 1.3rem;
+}
+
+.invoice-doc-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+}
+
+.invoice-doc-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin-bottom: 0.2rem;
+}
+
+.invoice-doc-value {
+  font-weight: 600;
+}
+
+.invoice-doc-table {
+  box-shadow: none;
+}
+
+.invoice-doc-table tfoot td {
+  border-top: 2px solid var(--text);
+  padding-top: 0.8rem;
+}
+
+.invoice-doc-status {
+  font-size: 0.9rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.invoice-doc-signoff {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.invoice-doc-signature-line {
+  border-bottom: 1px solid var(--text);
+  height: 2.4rem;
+}
+
+/* Print: isolate the invoice document and leave room at the top of the
+   page for the clinic's own pre-printed letterhead. */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .invoice-print-area,
+  .invoice-print-area * {
+    visibility: visible;
+  }
+
+  .invoice-print-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.5in 0.75in 0.75in;
+  }
+
+  .invoice-doc-noprint {
+    display: none !important;
+  }
+}
