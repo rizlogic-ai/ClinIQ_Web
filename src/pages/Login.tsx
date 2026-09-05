@@ -55,7 +55,7 @@ export function Login() {
           </div>
 
           <h1>
-            The calm way to run a clinic.
+            You treat. ClinIQ handles the rest.
           </h1>
           <p className="auth-lede">
             Scheduling, records and billing in one place — with an AI colleague when you
