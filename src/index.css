@@ -1951,3 +1951,14 @@ textarea {
 .ai-message-assistant {
   max-width: 88%;
 }
+
+/* The opening impression line, set apart from the sections below it */
+.clinical-answer .clinical-lead {
+  font-size: 0.96rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.5;
+  padding-left: 0.7rem;
+  border-left: 3px solid var(--primary);
+  margin-bottom: 0.9rem;
+}

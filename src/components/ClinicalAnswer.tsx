@@ -48,12 +48,24 @@ function renderBlocks(text: string): ReactNode[] {
       continue;
     }
 
-    // A short bold-only line reads as a section label in practice.
-    const boldHeading = /^\*\*(.+?)\*\*:?\s*$/.exec(line.trim());
-    if (boldHeading) {
+    // A bold-only line is a section label when it's short and label-like.
+    // The opening impression is also bold but is a full sentence, so it stays
+    // a paragraph and gets the lead treatment instead.
+    const boldOnly = /^\*\*(.+?)\*\*:?\s*$/.exec(line.trim());
+    if (boldOnly) {
       flushParagraph();
       flushList();
-      blocks.push(<h4 key={key++}>{boldHeading[1]}</h4>);
+      const label = boldOnly[1];
+      const isLabel = label.length <= 45 && !/[.?!]$/.test(label);
+      blocks.push(
+        isLabel ? (
+          <h4 key={key++}>{label}</h4>
+        ) : (
+          <p key={key++} className="clinical-lead">
+            {label}
+          </p>
+        )
+      );
       continue;
     }
 
