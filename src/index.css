@@ -212,7 +212,7 @@ button {
   /* The deeper bottom padding lifts the content above centre, so the mode
      tabs read as the first thing on the card without stranding empty space
      underneath the form. */
-  padding: 3rem 2.75rem 5rem;
+  padding: 3rem 2.75rem 9rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
