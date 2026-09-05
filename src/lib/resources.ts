@@ -179,3 +179,38 @@ export const guestApi = {
     time: string;
   }) => api.post<GuestBookingResult>("/portal/guest-appointments", data),
 };
+
+export interface AiMessage {
+  id: string;
+  role: "user" | "assistant";
+  content: string;
+  model: string | null;
+  createdAt: string;
+}
+
+export interface AiThreadSummary {
+  id: string;
+  title: string;
+  messageCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export const aiColleagueApi = {
+  status: () =>
+    api.get<{ configured: boolean; dailyLimit: number }>("/ai-colleague/status"),
+  listThreads: () =>
+    api.get<{ threads: AiThreadSummary[] }>("/ai-colleague/threads").then((r) => r.threads),
+  getThread: (id: string) =>
+    api.get<{ thread: { id: string; title: string }; messages: AiMessage[] }>(
+      `/ai-colleague/threads/${id}`
+    ),
+  start: (question: string) =>
+    api.post<{ threadId: string; messages: AiMessage[] }>("/ai-colleague/threads", { question }),
+  reply: (id: string, question: string) =>
+    api.post<{ threadId: string; messages: AiMessage[] }>(
+      `/ai-colleague/threads/${id}/messages`,
+      { question }
+    ),
+  deleteThread: (id: string) => api.delete<{ deleted: boolean }>(`/ai-colleague/threads/${id}`),
+};

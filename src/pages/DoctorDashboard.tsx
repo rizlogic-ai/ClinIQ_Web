@@ -12,6 +12,8 @@ import {
   Trash2,
   Inbox,
   FileText,
+  Bot,
+  ClipboardList,
 } from "lucide-react";
 import { appointmentsApi } from "../lib/resources";
 import type { Appointment, AppointmentStatus } from "../types";
@@ -20,6 +22,7 @@ import { Modal } from "../components/Modal";
 import { StatCard } from "../components/StatCard";
 import { useToast } from "../components/ToastProvider";
 import { useMoney } from "../context/AuthContext";
+import { AiColleague } from "../components/AiColleague";
 import { PatientHistoryModal } from "../components/PatientHistoryModal";
 
 const FILTERS: { key: AppointmentStatus | "all"; label: string }[] = [
@@ -39,6 +42,7 @@ interface ServiceDraft {
 export function DoctorDashboard() {
   const toast = useToast();
   const money = useMoney();
+  const [view, setView] = useState<"appointments" | "colleague">("appointments");
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [filter, setFilter] = useState<AppointmentStatus | "all">("pending");
   const [loading, setLoading] = useState(true);
@@ -190,8 +194,37 @@ export function DoctorDashboard() {
     }
   }
 
+  if (view === "colleague") {
+    return (
+      <div className="dashboard">
+        <div className="tab-bar">
+          <button className="tab" onClick={() => setView("appointments")}>
+            <ClipboardList size={15} />
+            Appointments
+          </button>
+          <button className="tab tab-active">
+            <Bot size={15} />
+            AI colleague
+          </button>
+        </div>
+        <AiColleague />
+      </div>
+    );
+  }
+
   return (
     <div className="dashboard">
+      <div className="tab-bar">
+        <button className="tab tab-active">
+          <ClipboardList size={15} />
+          Appointments
+        </button>
+        <button className="tab" onClick={() => setView("colleague")}>
+          <Bot size={15} />
+          AI colleague
+        </button>
+      </div>
+
       <div className="section-eyebrow">Overview</div>
       <div className="stat-row">
         <StatCard icon={Clock3} label="Pending review" value={stats.pending} tone="amber" />
