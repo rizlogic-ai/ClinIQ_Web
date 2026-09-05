@@ -1888,3 +1888,66 @@ textarea {
   .ai-message { max-width: 92%; }
   .ai-thread-delete { opacity: 1; }
 }
+
+/* Structured clinical answer from the AI colleague */
+.clinical-answer > *:first-child { margin-top: 0; }
+.clinical-answer > *:last-child { margin-bottom: 0; }
+
+.clinical-answer p {
+  margin: 0 0 0.7rem;
+}
+
+.clinical-answer h4 {
+  font-family: "Plus Jakarta Sans", "Inter", sans-serif;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--primary);
+  margin: 1.1rem 0 0.45rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.clinical-answer ul,
+.clinical-answer ol {
+  margin: 0 0 0.7rem;
+  padding-left: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.clinical-answer li {
+  line-height: 1.55;
+}
+
+.clinical-answer li::marker {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.clinical-answer strong {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.clinical-answer code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.85em;
+  background: var(--bg);
+  border: 1px solid var(--border-soft);
+  border-radius: 4px;
+  padding: 0.05rem 0.3rem;
+}
+
+/* The structured answer builds real blocks, so pre-wrap would double spacing */
+.ai-message-assistant .ai-message-body {
+  white-space: normal;
+  padding: 0.85rem 1.1rem;
+}
+
+/* Structured answers read better with a little more width */
+.ai-message-assistant {
+  max-width: 88%;
+}

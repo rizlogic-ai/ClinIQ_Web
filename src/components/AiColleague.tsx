@@ -7,6 +7,7 @@ import {
 } from "../lib/resources";
 import { useToast } from "./ToastProvider";
 import { useConfirm } from "./ConfirmProvider";
+import { ClinicalAnswer } from "./ClinicalAnswer";
 
 const STARTERS = [
   "Differential for a 55-year-old with new burning foot pain at night and poorly controlled T2DM?",
@@ -201,7 +202,9 @@ export function AiColleague() {
                   AI colleague
                 </div>
               )}
-              <div className="ai-message-body">{m.content}</div>
+              <div className="ai-message-body">
+                {m.role === "assistant" ? <ClinicalAnswer text={m.content} /> : m.content}
+              </div>
             </div>
           ))}
 
