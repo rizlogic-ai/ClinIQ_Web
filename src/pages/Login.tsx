@@ -1,7 +1,8 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { ClipboardCheck, Receipt, CalendarCheck2, Lock, User, Smartphone } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { Logo } from "../components/Logo";
+import { guestApi, type GuestBookingResult, type PortalClinic } from "../lib/resources";
 
 type Mode = "staff" | "admin" | "patient";
 
@@ -152,6 +153,15 @@ const DIAL_CODES = [
 ];
 
 function PatientLogin() {
+  const [asGuest, setAsGuest] = useState(false);
+  return asGuest ? (
+    <GuestBooking onBack={() => setAsGuest(false)} />
+  ) : (
+    <PatientOtpLogin onGuest={() => setAsGuest(true)} />
+  );
+}
+
+function PatientOtpLogin({ onGuest }: { onGuest: () => void }) {
   const { requestPatientOtp, verifyPatientOtp, loading, error } = useAuth();
   const [step, setStep] = useState<"phone" | "code">("phone");
   const [dial, setDial] = useState("+92");
@@ -230,6 +240,12 @@ function PatientLogin() {
           <button type="submit" className="btn btn-primary btn-block" disabled={loading || !local}>
             {loading ? "Sending…" : "Send code"}
           </button>
+          <div className="auth-alt">
+            <span>Don't want to sign in?</span>
+            <button type="button" className="link-btn" onClick={onGuest}>
+              Book as a guest
+            </button>
+          </div>
         </form>
       ) : (
         <form onSubmit={submitCode} className="auth-form">
@@ -283,6 +299,190 @@ function PatientLogin() {
         </form>
       )}
       {step === "phone" && notice && <div className="info-banner">{notice}</div>}
+    </>
+  );
+}
+
+function GuestBooking({ onBack }: { onBack: () => void }) {
+  const [clinics, setClinics] = useState<PortalClinic[]>([]);
+  const [clinicId, setClinicId] = useState("");
+  const [doctorId, setDoctorId] = useState("");
+  const [name, setName] = useState("");
+  const [dial, setDial] = useState("+92");
+  const [local, setLocal] = useState("");
+  const [reason, setReason] = useState("");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [done, setDone] = useState<GuestBookingResult | null>(null);
+
+  useEffect(() => {
+    guestApi
+      .listClinics()
+      .then((list) => {
+        setClinics(list);
+        if (list.length === 1) setClinicId(list[0].id);
+      })
+      .catch((e) => setError(e instanceof Error ? e.message : "Could not load clinics"));
+  }, []);
+
+  const doctors = clinics.find((c) => c.id === clinicId)?.doctors ?? [];
+  const phone = `${dial}${local.replace(/\D/g, "").replace(/^0+/, "")}`;
+
+  async function submit(e: FormEvent) {
+    e.preventDefault();
+    setSaving(true);
+    setError(null);
+    try {
+      setDone(await guestApi.book({ name, phone, doctorId, reason, date, time }));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not send your request");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  if (done) {
+    return (
+      <>
+        <h2>Request sent</h2>
+        <p className="subtitle">The clinic will confirm your appointment shortly.</p>
+        <div className="guest-summary">
+          <div>
+            <span className="field-label">Doctor</span>
+            {done.doctor.name}
+          </div>
+          {done.clinic && (
+            <div>
+              <span className="field-label">Clinic</span>
+              {done.clinic.name}
+            </div>
+          )}
+          <div>
+            <span className="field-label">When</span>
+            {done.appointment.date} at {done.appointment.time}
+          </div>
+          <div>
+            <span className="field-label">Reason</span>
+            {done.appointment.reason}
+          </div>
+        </div>
+        <p className="muted">
+          Keep this to hand — without an account you can't check the status here, so the clinic
+          will contact you on {phone}.
+        </p>
+        <button type="button" className="btn btn-ghost btn-block" onClick={onBack}>
+          Back to sign in
+        </button>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <h2>Book as a guest</h2>
+      <p className="subtitle">No account needed — the clinic will call you to confirm</p>
+
+      <form onSubmit={submit} className="auth-form">
+        <label>
+          Your full name
+          <div className="input-with-icon">
+            <User size={16} />
+            <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Ayesha Khan" required />
+          </div>
+        </label>
+
+        <label>
+          Mobile number
+          <div className="phone-input">
+            <select value={dial} onChange={(e) => setDial(e.target.value)}>
+              {DIAL_CODES.map((d) => (
+                <option key={d.code} value={d.code}>
+                  {d.label}
+                </option>
+              ))}
+            </select>
+            <div className="input-with-icon">
+              <Smartphone size={16} />
+              <input
+                value={local}
+                onChange={(e) => setLocal(e.target.value)}
+                inputMode="tel"
+                placeholder="300 1234567"
+                required
+              />
+            </div>
+          </div>
+        </label>
+
+        <label>
+          Clinic
+          <select
+            value={clinicId}
+            onChange={(e) => {
+              setClinicId(e.target.value);
+              setDoctorId("");
+            }}
+            required
+          >
+            <option value="">Select a clinic…</option>
+            {clinics.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+                {c.city ? ` — ${c.city}` : ""}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label>
+          Doctor
+          <select value={doctorId} onChange={(e) => setDoctorId(e.target.value)} required disabled={!clinicId}>
+            <option value="">Select a doctor…</option>
+            {doctors.map((d) => (
+              <option key={d.id} value={d.id}>
+                {d.name}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label>
+          Reason for visit
+          <input
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+            placeholder="e.g. Toothache, checkup"
+            required
+          />
+        </label>
+
+        <div className="form-row">
+          <label>
+            Date
+            <input
+              type="date"
+              value={date}
+              min={new Date().toISOString().slice(0, 10)}
+              onChange={(e) => setDate(e.target.value)}
+              required
+            />
+          </label>
+          <label>
+            Time
+            <input type="time" value={time} onChange={(e) => setTime(e.target.value)} required />
+          </label>
+        </div>
+
+        {error && <div className="error-banner">{error}</div>}
+        <button type="submit" className="btn btn-primary btn-block" disabled={saving || !doctorId}>
+          {saving ? "Sending…" : "Request appointment"}
+        </button>
+        <button type="button" className="link-btn" onClick={onBack}>
+          Back to sign in
+        </button>
+      </form>
     </>
   );
 }

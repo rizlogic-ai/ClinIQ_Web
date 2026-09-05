@@ -51,6 +51,7 @@ export interface Patient {
   id: string;
   name: string;
   phone: string;
+  phoneVerified?: boolean;
   email?: string;
   notes?: string;
   createdAt: string;
@@ -106,6 +107,7 @@ export interface Appointment {
   time: string;
   status: AppointmentStatus;
   createdBy: string;
+  bookedByPatient?: boolean;
   createdAt: string;
   updatedAt: string;
   doctorNote?: string;

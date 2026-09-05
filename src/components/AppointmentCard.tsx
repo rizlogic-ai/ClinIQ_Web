@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { CalendarDays, FileText, MessageSquareText, AlertCircle, Receipt, Stethoscope } from "lucide-react";
+import { CalendarDays, FileText, MessageSquareText, AlertCircle, Receipt, Stethoscope, ShieldAlert } from "lucide-react";
 import type { Appointment } from "../types";
 import { StatusBadge } from "./StatusBadge";
 import { useMoney } from "../context/AuthContext";
@@ -28,6 +28,12 @@ export function AppointmentCard({
           <div>
             <div className="patient-name">{appointment.patient?.name ?? "Unknown patient"}</div>
             <div className="muted">{appointment.patient?.phone}</div>
+            {appointment.bookedByPatient && !appointment.patient?.phoneVerified && (
+              <span className="badge badge-unverified" title="Booked by a guest — number not verified">
+                <ShieldAlert size={11} />
+                Unverified number
+              </span>
+            )}
           </div>
         </div>
         <StatusBadge status={appointment.status} />

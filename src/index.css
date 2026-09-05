@@ -912,6 +912,32 @@ textarea {
   font-size: 0.85rem;
 }
 
+.badge-unverified {
+  background: var(--amber-bg);
+  color: var(--amber-text);
+  margin-top: 0.35rem;
+}
+
+.auth-alt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.guest-summary {
+  display: grid;
+  gap: 0.7rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.9rem 1rem;
+  margin-bottom: 0.9rem;
+  font-size: 0.9rem;
+}
+
 /* Patient sign-in: dial-code select sits flush against the number field */
 .phone-input {
   display: flex;

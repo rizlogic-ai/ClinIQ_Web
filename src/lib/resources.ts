@@ -160,3 +160,22 @@ export const portalApi = {
   book: (data: { doctorId: string; reason: string; date: string; time: string }) =>
     api.post<{ appointment: Appointment }>("/portal/appointments", data).then((r) => r.appointment),
 };
+
+export interface GuestBookingResult {
+  booked: boolean;
+  appointment: { date: string; time: string; reason: string };
+  doctor: { name: string };
+  clinic: { name: string } | null;
+}
+
+export const guestApi = {
+  listClinics: () => api.get<{ clinics: PortalClinic[] }>("/portal/clinics").then((r) => r.clinics),
+  book: (data: {
+    name: string;
+    phone: string;
+    doctorId: string;
+    reason: string;
+    date: string;
+    time: string;
+  }) => api.post<GuestBookingResult>("/portal/guest-appointments", data),
+};
