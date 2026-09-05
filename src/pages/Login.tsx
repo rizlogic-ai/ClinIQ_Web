@@ -1,5 +1,14 @@
 import { useEffect, useState, type FormEvent } from "react";
-import { ClipboardCheck, Receipt, CalendarCheck2, Lock, User, Smartphone } from "lucide-react";
+import {
+  ClipboardCheck,
+  Receipt,
+  CalendarCheck2,
+  Lock,
+  User,
+  Smartphone,
+  MessageCircle,
+  Bot,
+} from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { Logo } from "../components/Logo";
 import { ThemeToggle } from "../components/ThemeToggle";
@@ -47,15 +56,23 @@ export function Login() {
           <ul className="hero-feature-list">
             <li>
               <CalendarCheck2 size={18} />
-              <span>Assistants schedule visits and keep the calendar moving</span>
+              <span>Patients book themselves, or your assistant books for them</span>
             </li>
             <li>
               <ClipboardCheck size={18} />
               <span>Doctors accept, reschedule and close out appointments</span>
             </li>
             <li>
+              <MessageCircle size={18} />
+              <span>Confirmations reach patients on WhatsApp automatically</span>
+            </li>
+            <li>
               <Receipt size={18} />
-              <span>Fees turn into invoices automatically, ready to collect</span>
+              <span>Fees become invoices, ready to print and collect</span>
+            </li>
+            <li>
+              <Bot size={18} />
+              <span>An AI colleague on hand for a quick second opinion</span>
             </li>
           </ul>
         </div>
