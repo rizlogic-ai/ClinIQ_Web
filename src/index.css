@@ -125,61 +125,70 @@ button {
   font-size: 0.85rem;
 }
 
-/* Auth screen */
+/* Auth screen — full-bleed split: brand on the left, sign-in on the right */
 .auth-screen {
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  /* fractional columns can round a pixel past the viewport */
+  overflow-x: hidden;
+}
+
+.auth-brand {
   position: relative;
-}
-
-.auth-layout {
-  display: flex;
-  max-width: 920px;
-  width: 100%;
-  background: var(--surface);
-  border-radius: 24px;
   overflow: hidden;
-  box-shadow: var(--shadow-lg);
-  border: 1px solid var(--border-soft);
-}
-
-.auth-hero {
-  flex: 1.1;
-  padding: 3rem 2.75rem;
   background: var(--hero-gradient);
   color: var(--hero-text);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  position: relative;
-  overflow: hidden;
+  padding: 3.5rem clamp(2rem, 5vw, 4.5rem);
 }
 
-.auth-hero::after {
+/* Soft light source behind the copy, so the panel isn't a flat slab */
+.auth-brand::before {
   content: "";
   position: absolute;
-  width: 320px;
-  height: 320px;
+  width: 620px;
+  height: 620px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.06);
-  right: -120px;
-  bottom: -140px;
+  right: -240px;
+  top: -200px;
+  background: radial-gradient(circle, rgba(94, 234, 212, 0.22), transparent 68%);
+  pointer-events: none;
 }
 
-.auth-hero h1 {
-  font-size: 1.9rem;
-  margin: 1.25rem 0 0.5rem;
+.auth-brand-inner {
+  position: relative;
+  max-width: 30rem;
+}
+
+.auth-wordmark {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: "Plus Jakarta Sans", "Inter", sans-serif;
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
+  margin-bottom: 2.5rem;
+}
+
+.auth-brand h1 {
+  font-size: clamp(1.95rem, 3.2vw, 2.7rem);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  margin: 0 0 0.85rem;
+  text-wrap: balance;
   color: var(--hero-text);
 }
 
-.auth-hero p {
-  color: rgba(255, 255, 255, 0.78);
-  line-height: 1.5;
-  margin: 0 0 1.75rem;
-  max-width: 30ch;
+.auth-lede {
+  color: rgba(255, 255, 255, 0.76);
+  line-height: 1.6;
+  margin: 0 0 2.25rem;
+  max-width: 34ch;
+  font-size: 0.98rem;
 }
 
 .hero-feature-list {
@@ -188,44 +197,155 @@ button {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 0.85rem;
   position: relative;
 }
 
 .hero-feature-list li {
   display: flex;
   align-items: flex-start;
-  gap: 0.65rem;
-  font-size: 0.88rem;
+  gap: 0.7rem;
+  font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.9);
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 .hero-feature-list svg {
   flex-shrink: 0;
-  margin-top: 0.1rem;
+  margin-top: 0.15rem;
   color: var(--hero-accent);
+}
+
+/* ECG trace, echoing the mark. Draws on a slow loop along the panel floor. */
+.auth-pulse {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 74px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.auth-pulse path {
+  fill: none;
+  stroke: var(--hero-accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1400;
+  stroke-dashoffset: 1400;
+  animation: pulse-trace 7s linear infinite;
+}
+
+@keyframes pulse-trace {
+  0% { stroke-dashoffset: 1400; }
+  55% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -1400; }
+}
+
+/* Right panel */
+.auth-panel {
+  position: relative;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem clamp(1.5rem, 4vw, 3.5rem) 3rem;
+}
+
+.auth-panel-top {
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
 }
 
 .auth-card {
   flex: 1;
-  /* The deeper bottom padding lifts the content above centre, so the mode
-     tabs read as the first thing on the card without stranding empty space
-     underneath the form. */
-  padding: 3rem 2.75rem 9rem;
+  width: 100%;
+  max-width: 25rem;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding-bottom: 2rem;
+}
+
+/* Role chooser — three real choices, not cramped tabs */
+.role-chooser {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.role-option {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  padding: 0.7rem 0.75rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--muted);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.role-option svg {
+  margin-bottom: 0.2rem;
+}
+
+.role-option:hover {
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+.role-option:focus-visible {
+  outline: 2px solid var(--primary-light);
+  outline-offset: 1px;
+}
+
+.role-option-label {
+  font-family: "Plus Jakarta Sans", "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.role-option-hint {
+  font-size: 0.7rem;
+  line-height: 1.25;
+  color: var(--muted);
+}
+
+.role-option-active {
+  background: var(--primary-tint);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.role-option-active .role-option-label {
+  color: var(--primary);
+}
+
+.role-option-active .role-option-hint {
+  color: var(--primary);
+  opacity: 0.85;
 }
 
 .auth-card h2 {
-  margin: 0 0 0.25rem;
-  font-size: 1.4rem;
+  margin: 0 0 0.3rem;
+  font-size: 1.55rem;
+  letter-spacing: -0.02em;
 }
 
 .subtitle {
   color: var(--muted);
-  margin: 0 0 1.5rem;
+  margin: 0 0 1.75rem;
   font-size: 0.9rem;
 }
 
@@ -272,6 +392,27 @@ button {
   font: inherit;
   font-weight: 600;
   text-decoration: underline;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-pulse path { animation: none; stroke-dashoffset: 0; }
+}
+
+/* Brand panel becomes a header strip on narrow screens */
+@media (max-width: 900px) {
+  .auth-screen { grid-template-columns: 1fr; }
+  .auth-brand { padding: 2.5rem 1.75rem 3.5rem; }
+  .auth-brand h1 { font-size: 1.75rem; }
+  .auth-lede { margin-bottom: 1.5rem; }
+  .hero-feature-list li:nth-child(n + 4) { display: none; }
+  .auth-panel { padding: 1.25rem 1.5rem 2.5rem; }
+  .auth-card { justify-content: flex-start; padding-top: 1.5rem; }
+}
+
+@media (max-width: 420px) {
+  .role-chooser { gap: 0.35rem; }
+  .role-option { padding: 0.6rem 0.5rem; }
+  .role-option-hint { display: none; }
 }
 
 /* App shell */
@@ -446,11 +587,6 @@ button {
   box-shadow: var(--shadow-sm);
 }
 
-.auth-theme-toggle {
-  position: absolute;
-  top: 1.25rem;
-  right: 1.5rem;
-}
 
 .app-main {
   flex: 1;
@@ -1490,18 +1626,6 @@ textarea {
 
 /* Responsive */
 @media (max-width: 720px) {
-  .auth-layout {
-    flex-direction: column;
-  }
-
-  .auth-hero {
-    padding: 2.25rem 1.75rem;
-  }
-
-  .auth-card {
-    padding: 2.25rem 1.75rem;
-  }
-
   .app-main {
     padding: 1.25rem 1rem 2.5rem;
   }

@@ -8,6 +8,9 @@ import {
   Smartphone,
   MessageCircle,
   Bot,
+  Stethoscope,
+  ShieldCheck,
+  CalendarHeart,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { Logo } from "../components/Logo";
@@ -42,64 +45,71 @@ export function Login() {
 
   return (
     <div className="auth-screen">
-      <div className="auth-theme-toggle">
-        <ThemeToggle />
-      </div>
-      <div className="auth-layout">
-        <div className="auth-hero">
-          <div className="brand-mark brand-mark-lg">
-            <Logo size={26} variant="mark" />
+      <aside className="auth-brand">
+        <div className="auth-brand-inner">
+          <div className="auth-wordmark">
+            <span className="brand-mark brand-mark-lg">
+              <Logo size={26} variant="mark" />
+            </span>
+            <span>ClinIQ</span>
           </div>
-          <h1>ClinIQ</h1>
-          <p>Run appointments and billing for the whole practice from one clean workspace.</p>
+
+          <h1>
+            The calm way to run a clinic.
+          </h1>
+          <p className="auth-lede">
+            Scheduling, records and billing in one place — with an AI colleague when you
+            want a second opinion.
+          </p>
 
           <ul className="hero-feature-list">
             <li>
-              <CalendarCheck2 size={18} />
+              <CalendarCheck2 size={17} />
               <span>Patients book themselves, or your assistant books for them</span>
             </li>
             <li>
-              <ClipboardCheck size={18} />
+              <ClipboardCheck size={17} />
               <span>Doctors accept, reschedule and close out appointments</span>
             </li>
             <li>
-              <MessageCircle size={18} />
+              <MessageCircle size={17} />
               <span>Confirmations reach patients on WhatsApp automatically</span>
             </li>
             <li>
-              <Receipt size={18} />
+              <Receipt size={17} />
               <span>Fees become invoices, ready to print and collect</span>
             </li>
             <li>
-              <Bot size={18} />
+              <Bot size={17} />
               <span>An AI colleague on hand for a quick second opinion</span>
             </li>
           </ul>
         </div>
 
+        <PulseLine />
+      </aside>
+
+      <main className="auth-panel">
+        <div className="auth-panel-top">
+          <ThemeToggle />
+        </div>
+
         <div className="auth-card">
-          <div className="segmented">
-            <button
-              type="button"
-              className={mode === "staff" ? "segmented-active" : ""}
-              onClick={() => setMode("staff")}
-            >
-              Staff
-            </button>
-            <button
-              type="button"
-              className={mode === "admin" ? "segmented-active" : ""}
-              onClick={() => setMode("admin")}
-            >
-              Admin
-            </button>
-            <button
-              type="button"
-              className={mode === "patient" ? "segmented-active" : ""}
-              onClick={() => setMode("patient")}
-            >
-              Patient
-            </button>
+          <div className="role-chooser" role="radiogroup" aria-label="Who is signing in">
+            {ROLES.map(({ value, label, hint, Icon }) => (
+              <button
+                key={value}
+                type="button"
+                role="radio"
+                aria-checked={mode === value}
+                className={`role-option ${mode === value ? "role-option-active" : ""}`}
+                onClick={() => setMode(value)}
+              >
+                <Icon size={18} />
+                <span className="role-option-label">{label}</span>
+                <span className="role-option-hint">{hint}</span>
+              </button>
+            ))}
           </div>
 
           {mode === "patient" ? (
@@ -159,8 +169,32 @@ export function Login() {
             </>
           )}
         </div>
-      </div>
+      </main>
     </div>
+  );
+}
+
+const ROLES: { value: Mode; label: string; hint: string; Icon: typeof Stethoscope }[] = [
+  { value: "staff", label: "Staff", hint: "Clinic team", Icon: Stethoscope },
+  { value: "admin", label: "Admin", hint: "Manage clinics", Icon: ShieldCheck },
+  { value: "patient", label: "Patient", hint: "Book a visit", Icon: CalendarHeart },
+];
+
+/**
+ * The ClinIQ mark is an ECG trace, so the sign-in screen carries the same
+ * line, drawn on a slow loop. Decorative only.
+ */
+function PulseLine() {
+  return (
+    <svg
+      className="auth-pulse"
+      viewBox="0 0 600 60"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M0 30h120l14-22 16 44 18-34 12 12h60l14-22 16 44 18-34 12 12h60l14-22 16 44 18-34 12 12h180" />
+    </svg>
   );
 }
 
