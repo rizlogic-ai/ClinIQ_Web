@@ -24,6 +24,7 @@ import { StatCard } from "../components/StatCard";
 import { Modal } from "../components/Modal";
 import { InvoiceDocument } from "../components/InvoiceDocument";
 import { useToast } from "../components/ToastProvider";
+import { useMoney } from "../context/AuthContext";
 import { useConfirm } from "../components/ConfirmProvider";
 import { PatientHistoryModal } from "../components/PatientHistoryModal";
 
@@ -36,6 +37,7 @@ const TABS: { key: Tab; label: string; icon: typeof CalendarPlus }[] = [
 ];
 
 export function AssistantDashboard() {
+  const money = useMoney();
   const [tab, setTab] = useState<Tab>("new");
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
@@ -69,7 +71,7 @@ export function AssistantDashboard() {
         <StatCard icon={Users} label="Patients on file" value={stats.patients} tone="violet" />
         <StatCard icon={CalendarDays} label="Today's schedule" value={stats.todayCount} tone="blue" />
         <StatCard icon={Clock3} label="Awaiting doctor" value={stats.pending} tone="amber" />
-        <StatCard icon={DollarSign} label="Unpaid invoices" value={`$${stats.unpaidTotal.toFixed(2)}`} tone="red" />
+        <StatCard icon={DollarSign} label="Unpaid invoices" value={money(stats.unpaidTotal)} tone="red" />
       </div>
 
       <div className="tab-bar">
@@ -401,6 +403,7 @@ function AppointmentsPanel({ onChanged }: { patients: Patient[]; onChanged: () =
 
 function InvoicesPanel({ onChanged }: { onChanged: () => void }) {
   const toast = useToast();
+  const money = useMoney();
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [loading, setLoading] = useState(true);
@@ -521,7 +524,7 @@ function InvoicesPanel({ onChanged }: { onChanged: () => void }) {
                   <tr key={inv.id}>
                     <td>{inv.patient?.name ?? "—"}</td>
                     <td>{new Date(inv.issuedAt).toLocaleString()}</td>
-                    <td>${inv.total.toFixed(2)}</td>
+                    <td>{money(inv.total)}</td>
                     <td>
                       <StatusBadge status={inv.status} />
                     </td>

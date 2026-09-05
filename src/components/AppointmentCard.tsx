@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { CalendarDays, FileText, MessageSquareText, AlertCircle, Receipt, Stethoscope } from "lucide-react";
 import type { Appointment } from "../types";
 import { StatusBadge } from "./StatusBadge";
+import { useMoney } from "../context/AuthContext";
 
 export function AppointmentCard({
   appointment,
@@ -10,6 +11,7 @@ export function AppointmentCard({
   appointment: Appointment;
   actions?: ReactNode;
 }) {
+  const money = useMoney();
   const feeTotal = appointment.services.reduce((sum, s) => sum + s.amount, 0);
   const initials = (appointment.patient?.name ?? "?")
     .split(" ")
@@ -70,13 +72,13 @@ export function AppointmentCard({
               {appointment.services.map((s) => (
                 <li key={s.id}>
                   <span>{s.description}</span>
-                  <span>${s.amount.toFixed(2)}</span>
+                  <span>{money(s.amount)}</span>
                 </li>
               ))}
             </ul>
             <div className="fee-total">
               <span>Total</span>
-              <span>${feeTotal.toFixed(2)}</span>
+              <span>{money(feeTotal)}</span>
             </div>
           </div>
         )}

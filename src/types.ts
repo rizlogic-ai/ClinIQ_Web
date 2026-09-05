@@ -1,10 +1,12 @@
-export type Role = "doctor" | "assistant" | "admin";
+export type Role = "doctor" | "assistant" | "admin" | "patient";
 
 export interface AuthUser {
   id: string;
   name: string;
   username: string;
   role: Role;
+  clinicId?: string;
+  currency?: string;
 }
 
 export type SubscriptionStatus = "active" | "paused" | "cancelled";

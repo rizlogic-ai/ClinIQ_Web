@@ -19,6 +19,7 @@ import { AppointmentCard } from "../components/AppointmentCard";
 import { Modal } from "../components/Modal";
 import { StatCard } from "../components/StatCard";
 import { useToast } from "../components/ToastProvider";
+import { useMoney } from "../context/AuthContext";
 import { PatientHistoryModal } from "../components/PatientHistoryModal";
 
 const FILTERS: { key: AppointmentStatus | "all"; label: string }[] = [
@@ -37,6 +38,7 @@ interface ServiceDraft {
 
 export function DoctorDashboard() {
   const toast = useToast();
+  const money = useMoney();
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [filter, setFilter] = useState<AppointmentStatus | "all">("pending");
   const [loading, setLoading] = useState(true);
@@ -195,7 +197,7 @@ export function DoctorDashboard() {
         <StatCard icon={Clock3} label="Pending review" value={stats.pending} tone="amber" />
         <StatCard icon={CheckCircle2} label="Accepted, upcoming" value={stats.accepted} tone="blue" />
         <StatCard icon={BadgeCheck} label="Completed" value={stats.completed} tone="green" />
-        <StatCard icon={Wallet} label="Fees recorded" value={`$${stats.revenue.toFixed(2)}`} tone="violet" />
+        <StatCard icon={Wallet} label="Fees recorded" value={money(stats.revenue)} tone="violet" />
       </div>
 
       <div className="filter-bar">
@@ -377,7 +379,7 @@ export function DoctorDashboard() {
           {completeTotal > 0 && (
             <div className="fee-total fee-total-modal">
               <span>Total</span>
-              <span>${completeTotal.toFixed(2)}</span>
+              <span>{money(completeTotal)}</span>
             </div>
           )}
           <div className="modal-actions">

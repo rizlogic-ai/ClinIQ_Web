@@ -7,8 +7,21 @@ import { Login } from "./pages/Login";
 import { DoctorDashboard } from "./pages/DoctorDashboard";
 import { AssistantDashboard } from "./pages/AssistantDashboard";
 import { AdminDashboard } from "./pages/AdminDashboard";
+import { PatientDashboard } from "./pages/PatientDashboard";
 
-const ROLE_LABELS = { doctor: "Doctor", assistant: "Assistant", admin: "Admin" } as const;
+const ROLE_LABELS = {
+  doctor: "Doctor",
+  assistant: "Assistant",
+  admin: "Admin",
+  patient: "Patient",
+} as const;
+
+const ROLE_SUBTITLES = {
+  admin: "Platform administration",
+  patient: "Your appointments",
+  doctor: "Appointment & billing management",
+  assistant: "Appointment & billing management",
+} as const;
 
 function Shell() {
   const { user, logout } = useAuth();
@@ -26,9 +39,7 @@ function Shell() {
           </span>
           <div>
             <div className="app-title">ClinIQ</div>
-            <div className="muted">
-              {user.role === "admin" ? "Platform administration" : "Appointment & billing management"}
-            </div>
+            <div className="muted">{ROLE_SUBTITLES[user.role]}</div>
           </div>
         </div>
         <div className="header-right">
@@ -45,6 +56,8 @@ function Shell() {
       <main className="app-main">
         {user.role === "admin" ? (
           <AdminDashboard />
+        ) : user.role === "patient" ? (
+          <PatientDashboard />
         ) : user.role === "doctor" ? (
           <DoctorDashboard />
         ) : (

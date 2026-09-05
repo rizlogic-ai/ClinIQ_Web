@@ -144,3 +144,19 @@ export const adminApi = {
       .patch<{ doctors: StaffMember[] }>(`/admin/staff/${id}/doctors`, { doctorIds })
       .then((r) => r.doctors),
 };
+
+export interface PortalClinic {
+  id: string;
+  name: string;
+  city?: string;
+  country?: string;
+  doctors: { id: string; name: string }[];
+}
+
+export const portalApi = {
+  listClinics: () => api.get<{ clinics: PortalClinic[] }>("/portal/clinics").then((r) => r.clinics),
+  listAppointments: () =>
+    api.get<{ appointments: Appointment[] }>("/portal/appointments").then((r) => r.appointments),
+  book: (data: { doctorId: string; reason: string; date: string; time: string }) =>
+    api.post<{ appointment: Appointment }>("/portal/appointments", data).then((r) => r.appointment),
+};

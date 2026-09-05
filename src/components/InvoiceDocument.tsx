@@ -1,4 +1,5 @@
 import type { Invoice } from "../types";
+import { useMoney } from "../context/AuthContext";
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString(undefined, {
@@ -9,6 +10,7 @@ function formatDate(iso: string) {
 }
 
 export function InvoiceDocument({ invoice }: { invoice: Invoice }) {
+  const money = useMoney();
   return (
     <div className="invoice-doc">
       <div className="invoice-doc-header">
@@ -51,14 +53,14 @@ export function InvoiceDocument({ invoice }: { invoice: Invoice }) {
           {invoice.services.map((s) => (
             <tr key={s.id}>
               <td>{s.description}</td>
-              <td style={{ textAlign: "right" }}>${s.amount.toFixed(2)}</td>
+              <td style={{ textAlign: "right" }}>{money(s.amount)}</td>
             </tr>
           ))}
         </tbody>
         <tfoot>
           <tr>
             <td style={{ fontWeight: 700 }}>Total</td>
-            <td style={{ textAlign: "right", fontWeight: 700 }}>${invoice.total.toFixed(2)}</td>
+            <td style={{ textAlign: "right", fontWeight: 700 }}>{money(invoice.total)}</td>
           </tr>
         </tfoot>
       </table>
