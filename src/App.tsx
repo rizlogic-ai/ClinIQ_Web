@@ -1,7 +1,9 @@
 import { LogOut, ClipboardList, ShieldCheck } from "lucide-react";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import { ToastProvider } from "./components/ToastProvider";
 import { ConfirmProvider } from "./components/ConfirmProvider";
+import { ThemeToggle } from "./components/ThemeToggle";
 import { Logo } from "./components/Logo";
 import { Login } from "./pages/Login";
 import { DoctorDashboard } from "./pages/DoctorDashboard";
@@ -48,6 +50,7 @@ function Shell() {
             {ROLE_LABELS[user.role]}
           </span>
           <span className="user-chip">{user.name}</span>
+          <ThemeToggle />
           <button className="btn btn-ghost icon-only-btn" onClick={logout} title="Sign out">
             <LogOut size={16} />
           </button>
@@ -71,11 +74,13 @@ function Shell() {
 export default function App() {
   return (
     <AuthProvider>
-      <ToastProvider>
-        <ConfirmProvider>
-          <Shell />
-        </ConfirmProvider>
-      </ToastProvider>
+      <ThemeProvider>
+        <ToastProvider>
+          <ConfirmProvider>
+            <Shell />
+          </ConfirmProvider>
+        </ToastProvider>
+      </ThemeProvider>
     </AuthProvider>
   );
 }

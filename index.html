@@ -12,6 +12,34 @@
       rel="stylesheet"
     />
     <title>ClinIQ</title>
+    <script>
+      // Apply the saved theme before first paint, otherwise a dark-mode user
+      // sees a white flash while React mounts.
+      (function () {
+        try {
+          var keys = Object.keys(localStorage).filter(function (k) {
+            return k.indexOf("cliniq-theme:") === 0;
+          });
+          var saved = null;
+          var auth = localStorage.getItem("doctor-app-auth");
+          if (auth) {
+            var id = (JSON.parse(auth).user || {}).id;
+            if (id) saved = localStorage.getItem("cliniq-theme:" + id);
+          }
+          if (!saved && keys.length) saved = localStorage.getItem("cliniq-theme:guest");
+          var theme = saved || "system";
+          var root = document.documentElement;
+          root.setAttribute("data-theme", theme);
+          if (
+            theme === "system" &&
+            window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches
+          ) {
+            root.classList.add("sys-dark");
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

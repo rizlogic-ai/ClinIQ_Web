@@ -19,6 +19,25 @@
   --success-text: #15803d;
   --amber-bg: #fef3e0;
   --amber-text: #b45309;
+  --border-strong: #cbd3e0;
+  --on-primary: #ffffff;
+  --primary-glow: #10a396;
+  --danger-hover-bg: #fbd7d7;
+  --chip-blue-bg: #e5edff;
+  --chip-blue-text: #1e40af;
+  --chip-violet-bg: #f1e8ff;
+  --chip-violet-text: #6d28d9;
+  --chip-red-bg: #fee2e2;
+  --chip-red-text: #991b1b;
+  --avatar-bg: linear-gradient(155deg, #99f6e4, #5eead4);
+  --avatar-text: #0b4741;
+  --skeleton-shine: #f6f8fb;
+  --header-bg: rgba(255, 255, 255, 0.85);
+  --page-glow-teal: rgba(20, 184, 166, 0.08);
+  --page-glow-violet: rgba(124, 58, 237, 0.06);
+  --hero-gradient: linear-gradient(155deg, #0f766e 0%, #115e59 55%, #0b3d3a 100%);
+  --hero-text: #ffffff;
+  --hero-accent: #5eead4;
   --radius: 14px;
   --radius-sm: 10px;
   --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
@@ -26,6 +45,55 @@
   --shadow-lg: 0 20px 45px -12px rgba(15, 23, 42, 0.18);
   font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
   color-scheme: light;
+}
+
+/* ── Dark theme ───────────────────────────────────────────────
+   Tokens only. Every component styles through these, so nothing
+   below this block needs a dark-specific rule. Applied when the
+   user picks Dark, or picks System on a dark OS. */
+:root[data-theme="dark"],
+:root[data-theme="system"].sys-dark {
+  --bg: #0b1118;
+  --bg-alt: #101822;
+  --surface: #141d28;
+  --border: #24313f;
+  --border-soft: #1c2632;
+  --border-strong: #334456;
+  --text: #e8eef4;
+  --muted: #93a3b4;
+  --primary: #2dd4bf;
+  --primary-light: #5eead4;
+  --primary-hover: #14b8a6;
+  --primary-tint: #10312d;
+  --primary-glow: #2dd4bf;
+  --accent-violet: #a78bfa;
+  --accent-blue: #60a5fa;
+  --danger: #f87171;
+  --danger-hover: #ef4444;
+  --danger-tint: #3a1a1a;
+  --danger-hover-bg: #4a2020;
+  --success-bg: #0f2f22;
+  --success-text: #4ade80;
+  --amber-bg: #3a2a10;
+  --amber-text: #fbbf24;
+  --chip-blue-bg: #16283f;
+  --chip-blue-text: #7fb2f7;
+  --chip-violet-bg: #241b3d;
+  --chip-violet-text: #b79df9;
+  --chip-red-bg: #3a1c1c;
+  --chip-red-text: #f79b9b;
+  --on-primary: #04211e;
+  --avatar-bg: linear-gradient(155deg, #14b8a6, #0d9488);
+  --avatar-text: #04211e;
+  --skeleton-shine: #1f2b38;
+  --header-bg: rgba(16, 24, 34, 0.85);
+  --page-glow-teal: rgba(20, 184, 166, 0.1);
+  --page-glow-violet: rgba(124, 58, 237, 0.09);
+  --hero-gradient: linear-gradient(155deg, #0d5b55 0%, #0a3f3b 55%, #061f1d 100%);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 24px -8px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 20px 45px -12px rgba(0, 0, 0, 0.75);
+  color-scheme: dark;
 }
 
 * {
@@ -36,8 +104,8 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  background-image: radial-gradient(circle at 10% -10%, rgba(20, 184, 166, 0.08), transparent 45%),
-    radial-gradient(circle at 90% 0%, rgba(124, 58, 237, 0.06), transparent 40%);
+  background-image: radial-gradient(circle at 10% -10%, var(--page-glow-teal), transparent 45%),
+    radial-gradient(circle at 90% 0%, var(--page-glow-violet), transparent 40%);
   background-attachment: fixed;
 }
 
@@ -64,6 +132,7 @@ button {
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
+  position: relative;
 }
 
 .auth-layout {
@@ -80,8 +149,8 @@ button {
 .auth-hero {
   flex: 1.1;
   padding: 3rem 2.75rem;
-  background: linear-gradient(155deg, #0f766e 0%, #115e59 55%, #0b3d3a 100%);
-  color: #fff;
+  background: var(--hero-gradient);
+  color: var(--hero-text);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -103,7 +172,7 @@ button {
 .auth-hero h1 {
   font-size: 1.9rem;
   margin: 1.25rem 0 0.5rem;
-  color: #fff;
+  color: var(--hero-text);
 }
 
 .auth-hero p {
@@ -135,7 +204,7 @@ button {
 .hero-feature-list svg {
   flex-shrink: 0;
   margin-top: 0.1rem;
-  color: #5eead4;
+  color: var(--hero-accent);
 }
 
 .auth-card {
@@ -214,7 +283,7 @@ button {
   align-items: center;
   justify-content: space-between;
   padding: 1rem 2rem;
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--header-bg);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
   position: sticky;
@@ -262,7 +331,7 @@ button {
   height: 38px;
   border-radius: 11px;
   background: linear-gradient(155deg, var(--primary-light), var(--primary));
-  color: #fff;
+  color: var(--on-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -303,18 +372,18 @@ button {
 }
 
 .role-chip-doctor {
-  background: #e5edff;
-  color: #1e40af;
+  background: var(--chip-blue-bg);
+  color: var(--chip-blue-text);
 }
 
 .role-chip-assistant {
-  background: #f1e8ff;
-  color: #6d28d9;
+  background: var(--chip-violet-bg);
+  color: var(--chip-violet-text);
 }
 
 .role-chip-admin {
-  background: #fee2e2;
-  color: #991b1b;
+  background: var(--chip-red-bg);
+  color: var(--chip-red-text);
 }
 
 .role-chip-patient {
@@ -334,6 +403,50 @@ button {
 .icon-only-btn {
   padding: 0.5rem;
   display: inline-flex;
+}
+
+/* Theme picker — light / system / dark */
+.theme-toggle {
+  display: inline-flex;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.theme-toggle button {
+  border: none;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0.32rem 0.5rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.theme-toggle button:hover {
+  color: var(--text);
+}
+
+.theme-toggle button:focus-visible {
+  outline: 2px solid var(--primary-light);
+  outline-offset: 1px;
+}
+
+.theme-toggle-active {
+  background: var(--surface);
+  color: var(--primary) !important;
+  box-shadow: var(--shadow-sm);
+}
+
+.auth-theme-toggle {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.5rem;
 }
 
 .app-main {
@@ -425,12 +538,12 @@ textarea {
 
 .btn-primary {
   background: linear-gradient(155deg, var(--primary-light), var(--primary));
-  color: #fff;
+  color: var(--on-primary);
   box-shadow: 0 4px 12px -4px rgba(15, 118, 110, 0.45);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: linear-gradient(155deg, #10a396, var(--primary-hover));
+  background: linear-gradient(155deg, var(--primary-glow), var(--primary-hover));
 }
 
 .btn-danger {
@@ -439,7 +552,7 @@ textarea {
 }
 
 .btn-danger:hover:not(:disabled) {
-  background: #fbd7d7;
+  background: var(--danger-hover-bg);
 }
 
 .btn-ghost {
@@ -450,7 +563,7 @@ textarea {
 
 .btn-ghost:hover:not(:disabled) {
   background: var(--bg);
-  border-color: #d5dae4;
+  border-color: var(--border-strong);
 }
 
 .icon-btn {
@@ -527,12 +640,12 @@ textarea {
 }
 
 .stat-tone-blue {
-  --tone: #1e40af;
+  --tone: var(--chip-blue-text);
 }
 
 .stat-tone-blue .stat-icon {
-  background: #e5edff;
-  color: #1e40af;
+  background: var(--chip-blue-bg);
+  color: var(--chip-blue-text);
 }
 
 .stat-tone-green {
@@ -545,12 +658,12 @@ textarea {
 }
 
 .stat-tone-violet {
-  --tone: #6d28d9;
+  --tone: var(--chip-violet-text);
 }
 
 .stat-tone-violet .stat-icon {
-  background: #f1e8ff;
-  color: #6d28d9;
+  background: var(--chip-violet-bg);
+  color: var(--chip-violet-text);
 }
 
 .stat-tone-red {
@@ -651,8 +764,8 @@ textarea {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background: linear-gradient(155deg, #99f6e4, #5eead4);
-  color: #0b4741;
+  background: var(--avatar-bg);
+  color: var(--avatar-text);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -767,13 +880,13 @@ textarea {
 }
 
 .chip:hover {
-  border-color: #cbd3e0;
+  border-color: var(--border-strong);
 }
 
 .chip-active {
   background: var(--text);
   border-color: var(--text);
-  color: #fff;
+  color: var(--bg);
 }
 
 .tab-bar {
@@ -840,7 +953,7 @@ textarea {
 
 .segmented-active {
   background: var(--primary) !important;
-  color: #fff !important;
+  color: var(--on-primary) !important;
 }
 
 /* Badges & banners */
@@ -863,8 +976,8 @@ textarea {
 }
 
 .badge-accepted {
-  background: #e5edff;
-  color: #1e40af;
+  background: var(--chip-blue-bg);
+  color: var(--chip-blue-text);
 }
 
 .badge-completed {
@@ -980,7 +1093,7 @@ textarea {
 .skeleton-card {
   height: 150px;
   border-radius: var(--radius);
-  background: linear-gradient(90deg, var(--border-soft) 25%, #f6f8fb 37%, var(--border-soft) 63%);
+  background: linear-gradient(90deg, var(--border-soft) 25%, var(--skeleton-shine) 37%, var(--border-soft) 63%);
   background-size: 400% 100%;
   animation: skeleton-shine 1.4s ease infinite;
 }
@@ -1274,7 +1387,7 @@ textarea {
 }
 
 .clinic-list-item:hover {
-  border-color: #cbd3e0;
+  border-color: var(--border-strong);
 }
 
 .clinic-list-item-active {
@@ -1468,6 +1581,30 @@ textarea {
 /* Print: isolate the invoice document and leave room at the top of the
    page for the clinic's own pre-printed letterhead. */
 @media print {
+  /* An invoice always prints as a black-on-white document, whatever theme
+     the person happens to be working in. */
+  :root {
+    --bg: #ffffff;
+    --bg-alt: #ffffff;
+    --surface: #ffffff;
+    --text: #000000;
+    --muted: #444444;
+    --border: #999999;
+    --border-soft: #cccccc;
+    --success-bg: #ffffff;
+    --success-text: #000000;
+    --amber-bg: #ffffff;
+    --amber-text: #000000;
+    --danger-tint: #ffffff;
+    color-scheme: light;
+  }
+
+  body {
+    background: #ffffff !important;
+    background-image: none !important;
+    color: #000000;
+  }
+
   body * {
     visibility: hidden;
   }

@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { ClipboardCheck, Receipt, CalendarCheck2, Lock, User, Smartphone } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { Logo } from "../components/Logo";
+import { ThemeToggle } from "../components/ThemeToggle";
 import { guestApi, type GuestBookingResult, type PortalClinic } from "../lib/resources";
 
 type Mode = "staff" | "admin" | "patient";
@@ -32,6 +33,9 @@ export function Login() {
 
   return (
     <div className="auth-screen">
+      <div className="auth-theme-toggle">
+        <ThemeToggle />
+      </div>
       <div className="auth-layout">
         <div className="auth-hero">
           <div className="brand-mark brand-mark-lg">
